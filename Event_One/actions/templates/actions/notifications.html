@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+<h1 class="entry-title">{% block blockname %} Notifications {% endblock blockname %} </h1>
+{% block content %}
+<h2 class='display-4 text-center'>Your notifications appear here</h2>
+<ul>
+    {% for action in actions %}
+        <li class=''>{{action.user}} {{action.verb}} {{action.target.title}} {{action.created|timesince}} ago</li>
+    {% endfor %}
+</ul>
+{% endblock %}

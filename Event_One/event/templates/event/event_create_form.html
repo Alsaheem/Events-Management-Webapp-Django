@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static%}
+<h1 class="entry-title">{% block blockname %} Create An Event {% endblock blockname %} </h1>
+{% block content %}
+<h2 class='display-4 text-center'>Create An Event</h2>
+<div class="container">
+<form  class='post-form' method="POST" action="" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div>
+    {{ form|crispy }}
+    </div>
+    <button type="submit" class='save btn btn-default'>Create Event</button>
+</form>
+</div>
+
+{% endblock %}

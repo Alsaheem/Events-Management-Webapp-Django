@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static %}
+<h1 class="entry-title">{% block blockname %} Contact Us {% endblock blockname %} </h1>
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="contact-location-details">
+                <h2 class="entry-title">Lagos</h2>
+
+                <div class="entry-content">
+                    <p>Vestibulum eget lacus at mauris sagittis varius. Etiam ut venenatis dui. Nullam tellus risus, pellentesque at facilisis et.</p>
+                </div>
+
+                <footer class="entry-footer">
+                    <ul>
+                        <li class="contact-address">667889 Madison Avenue, no24-56</li>
+                        <li class="contact-number">665 5667 8899 661</li>
+                        <li class="contact-email"><a href="#">office@yourbusiness.com</a></li>
+                    </ul>
+                </footer>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="contact-page-map">
+    <iframe id="gmap_canvas" src="https://maps.google.com/maps?q=university of san francisco&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="contact-form">
+                <form class="row">
+                    <div class="col-12 col-md-4"><input type="text" placeholder="Name"></div>
+                    <div class="col-12 col-md-4"><input type="email" placeholder="E-mail"></div>
+                    <div class="col-12 col-md-4"><input type="text" placeholder="Subject"></div>
+                    <div class="col-12"><textarea placeholder="Message" rows="8"></textarea></div>
+                    <div class="col-12 flex justify-content-center"><input class="btn gradient-bg" type="submit" value="Send Message"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

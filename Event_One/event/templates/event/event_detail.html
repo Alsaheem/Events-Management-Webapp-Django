@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+<h1 class="entry-title">{% block blockname %} Event Detail. {% endblock blockname %} </h1>
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 single-event">
+            <div class="event-content-wrap">
+                <header class="entry-header flex flex-wrap justify-content-between align-items-end">
+                    <div class="single-event-heading">
+                        <h2 class="entry-title text-capitalize display-4"> {{event.title}} </h2>
+                        <p>created by:  {{event.creator}} </p>
+                        <img class="rounded-circle article-img" src="{{ event.creator.profile.profile_pic.url }}">
+                        
+                    </div>
+
+                    <div class="buy-tickets flex justify-content-center align-items-center">
+                        <a class="btn gradient-bg" href="{% url 'events:attend_event' event.id %}">Attend This Event</a>
+                    </div>
+                </header>
+                  
+                <figure class="events-thumbnail">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 img-thumbnail">
+                                <img class="" src="{{ event.event_image1.url }}" alt="not found" >
+                            
+                        </div>
+                        <br>
+                        <div class="col-lg-4 col-md-4 img-thumbnail">
+                                <img class="" src="{{ event.event_image2.url }}" alt="not found" >
+                                
+                        </div>
+                        <div class="col-lg-4 col-md-4 img-thumbnail">
+                                <img class="" src="{{ event.event_image3.url }}" alt="not found" >
+                        </div>
+                    </div>
+                    <!-- <img src="{%static 'agenda/images/summer.jpg' %}" alt=""> -->
+                    
+                </figure>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="tabs">
+                <ul class="tabs-nav flex">
+                    <li class="tab-nav flex justify-content-center align-items-center" data-target="#tab_details">Details</li>
+                    <li class="tab-nav flex justify-content-center align-items-center" data-target="#tab_venue">Description</li>
+                    <li class="tab-nav flex justify-content-center align-items-center" data-target="#tab_organizers">Organizers</li>
+                </ul>
+
+                <div class="tabs-container">
+                    <div id="tab_details" class="tab-content">
+                        <div class="flex flex-wrap justify-content-between">
+                            <div class="single-event-details">
+                                <div class="single-event-details-row">
+                                    <label>Time</label>
+                                    <p><div class="event-date">{{event.event_time}}</div></p>
+                                </div>
+
+                                <div class="single-event-details-row">
+                                    <label>Location</label>
+                                    <p><div class="event-location"><a href="#">{{event.location}}</a></div></p>
+                                </div>
+
+                                <div class="single-event-details-row">
+                                    <label>Views and Claps:</label>
+                                    <p>{{event.claps}} claps and {{event.views}} views</p>
+                                </div>
+
+                                <div class="single-event-details-row">
+                                    <label>Categories:</label>
+                                    <p>{{event.category}}</p>
+                                </div>
+
+                                <div class="single-event-details-row">
+                                    <label>Published date:</label>
+                                    <p>{{event.Published_date}}</p>
+                                </div>
+                            </div>
+
+                            <div class="single-event-map">
+                                <iframe id="gmap_canvas" src="https://maps.google.com/maps?q=university of san francisco&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tab_venue" class="tab-content">
+                        <p>{{event.description}}</p>
+                    </div>
+
+                    <div id="tab_organizers" class="tab-content">
+                        <p>Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="div mt-5 mb-4 p-5">
+      {% if user.is_authenticated %}
+        <div>
+          <a class="btn btn-success btn-sm mt-1 mb-3 " href="#"; >update | Delete</a>
+        </div>
+      {% endif %}
+      
+      <h2> Attendees </h2>
+      {% for attendees in event.attendees.all %}
+        {{attendees.email}}
+      {% endfor %}
+
+      <h1>New Comment</h1>
+      <form  class='post-form' method="POST" action="{% url 'events:event_detail' pk=event.pk %}">
+        {% csrf_token %}
+        <div>
+        {{ form|crispy }}
+        </div>
+        <button type="submit" class='save btn btn-default'>Post Comment</button>
+      </form>
+  </div>
+        <ol>
+          {% for comment in comments  %}
+            <div class="card mb-3">
+            <div class="card card-header">
+                <p><img class="rounded-circle article-img" src="{{ comment.author.profile.profile_pic.url }}" alt="not found"> posted by {{comment.author }} on {{comment.created_date}}</p>
+            </div>
+            <div class="card card-body">
+                {{comment.comment_text}}
+            </div>
+            </div>
+          {% endfor %}
+        </ol>
+      
+</div>
+  
+
+
+<div class="mx-auto w-75">
+      <h2>{{ event.get_number_of_attendees }} Attending</h2>
+          <div class="card card-body">
+              {% for attendee in attending %}
+                  <p>{{ attendee.username|capfirst }}</p>
+
+              {% endfor %}
+
+          </div>
+      </div>
+{% endblock content %}

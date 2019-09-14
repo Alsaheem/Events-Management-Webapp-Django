@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load static %}
+<h1 class="entry-title">{% block blockname %} Events List. {% endblock blockname %} </h1>
+{% block content %}
+
+<form class="events-search">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-3">
+                <input type="date" placeholder="Date">
+            </div>
+
+            <div class="col-12 col-md-3">
+                <input type="text" placeholder="Event">
+            </div>
+
+            <div class="col-12 col-md-3">
+                <input type="text" placeholder="Location">
+            </div>
+
+            <div class="col-12 col-md-3">
+                <input class="btn gradient-bg" type="submit" value="Search Events">
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="container">
+    <div class="row events-list">
+      {%for event in events%}
+        <div class="col-12 col-lg-6 single-event mb-3">
+            <figure class="events-thumbnail">
+                <a href="#"><img src="{%static 'agenda/images/event-1.jpg' %}" alt=""></a>
+            </figure>
+
+            <div class="event-content-wrap">
+                <header class="entry-header flex justify-content-between">
+                    <div>
+                        <h2 class="entry-title text-capitalize"><a href="{% url 'events:event_detail' pk=event.pk %}">{{event.title}}</a></h2>
+
+                        <div class="event-location font-weight-bold">Location : {{event.location}}</div>
+
+                        <div class="event-date font-weight-bold"> Time : {{event.event_time}}</div>
+                    </div>
+
+                    <div class="event-cost flex justify-content-center align-items-center badge badge-danger">
+                        {{event.get_number_of_comments}} Comments
+                    </div>
+                </header>
+               </div>
+            </div>
+            {%endfor%}
+        </div>
+
+        </div>
+    </div>
+
+
+
+<div class="upcoming-events-outer mt-3 ">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="upcoming-events">
+                    <div class="upcoming-events-header">
+                        <h4>Upcoming Events</h4>
+                    </div>
+                    {% for event in events %}
+                    <!-- {% comment %} <div class="col-12"> {% endcomment %} -->
+                    <div class="upcoming-events-list">
+                        <div class="upcoming-event-wrap flex flex-wrap justify-content-between align-items-center">
+                            <figure class="events-thumbnail">
+                                <!-- {% comment %} <a href="#"><img src="{%static 'agenda/images/upcoming-1.jpg' %}" alt=""></a> {% endcomment %} -->
+                                <a href="#"><img class='rounded-circle account-img' src="{{ event.event_image1.url }}" alt=""></a>
+                            </figure>
+
+                            <div class="entry-meta">
+                                <div class="event-date">
+                                    {{event.event_time}}<span>published on {{event.published_date}}</span>
+                                </div>
+                            </div>
+
+                            <header class="entry-header">
+                                <h3 class="entry-title text-capitalize"><a href="#">{{event.title}}</a></h3>
+
+                                <div class="event-date-time"></div>
+
+                                <div class="event-speaker">Category : {{event.category}} , Creator {{event.creator}}</div>
+                            </header>
+                        </div>
+
+                        </div>
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
