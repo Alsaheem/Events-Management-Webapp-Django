@@ -68,11 +68,11 @@ class EventDetailView(View,LoginRequiredMixin):
         context['user_can_clap'] = event.user_can_clap(self.request.user)
         return context
 
-    def get_object(self):
+    def get_object(self,**kwargs):
         event_pk = self.kwargs.get('pk')
-        event_query = Event.objects.filter(pk=post_pk)
+        event_query = Event.objects.filter(pk=event_pk)
         if event_query.exists():
-            event_object  = event.query.first()
+            event_object  = event_query.first()
             view , created = View.objects.get_or_create(
                 user = self.request.user ,
                 event = event_object
