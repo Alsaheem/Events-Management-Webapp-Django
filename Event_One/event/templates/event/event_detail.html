@@ -11,12 +11,12 @@
                 <header class="entry-header flex flex-wrap justify-content-between align-items-end">
                     <div class="single-event-heading">
                         <h2 class="entry-title text-capitalize display-4"> {{event.title}} </h2>
-                        <p>created by:  {{event.creator}} </p>
-                        <img class="rounded-circle article-img" src="{{ event.creator.profile.profile_pic.url }}">
+                        <p>Created by:  {{event.creator|capfirst}} </p>
+                        <img style="height:120px; width:120px;" class="rounded-circle article-img" src="{{ event.creator.profile.profile_pic.url }}">
                         
                     </div>
 
-                    <div class="buy-tickets flex justify-content-center align-items-center">
+                    <div class="buy-tickets flex justify-content-center align-items-center pb-4">
                         <a class="btn gradient-bg" href="{% url 'events:attend_event' event.id %}">Attend This Event</a>
                     </div>
                 </header>
@@ -24,16 +24,16 @@
                 <figure class="events-thumbnail">
                     <div class="row">
                         <div class="col-lg-4 col-md-4 img-thumbnail">
-                                <img class="" src="{{ event.event_image1.url }}" alt="not found" >
+                                <img class="" style="height:300px; width:350px;" src="{{ event.event_image1.url }}" alt="not found" >
                             
                         </div>
                         <br>
                         <div class="col-lg-4 col-md-4 img-thumbnail">
-                                <img class="" src="{{ event.event_image2.url }}" alt="not found" >
+                                <img style="height:300px; width:350px;" class="" src="{{ event.event_image2.url }}" alt="not found" >
                                 
                         </div>
                         <div class="col-lg-4 col-md-4 img-thumbnail">
-                                <img class="" src="{{ event.event_image3.url }}" alt="not found" >
+                                <img style="height:300px; width:350px;" class="" src="{{ event.event_image3.url }}" alt="not found" >
                         </div>
                     </div>
                     <!-- <img src="{%static 'agenda/images/summer.jpg' %}" alt=""> -->
@@ -104,21 +104,22 @@
 
 
 <div class="div mt-5 mb-4 p-5">
-      {% if user.is_authenticated %}
+      {% if event.creator == user %}
         <div>
-          <a class="btn btn-success btn-sm mt-1 mb-3 " href="#"; >update | Delete</a>
-        </div>
-      {% endif %}
-      
+          <a class="btn btn-secondary btn-sm mt-1 mb-1" href="">Update</a>
+          <a class="btn btn-danger btn-sm mt-1 mb-1" href="">Delete</a>
+        </div>  
       <h2> Attendees </h2>
       {% for attendees in event.attendees.all %}
         {{attendees.email}}
       {% endfor %}
 
+      {% endif %}
+
       <h1>New Comment</h1>
       <form  class='post-form' method="POST" action="{% url 'events:event_detail' pk=event.pk %}">
         {% csrf_token %}
-        <div>
+        <div rows=3 >
         {{ form|crispy }}
         </div>
         <button type="submit" class='save btn btn-default'>Post Comment</button>
@@ -126,12 +127,19 @@
   </div>
         <ol>
           {% for comment in comments  %}
-            <div class="card mb-3">
-            <div class="card card-header">
-                <p><img class="rounded-circle article-img" src="{{ comment.author.profile.profile_pic.url }}" alt="not found"> posted by {{comment.author }} on {{comment.created_date}}</p>
+            <div class="card w-80 mb-3">
+            <div class="card-header"><p class="card-text"><span style="color:blue;"><strong><a href="">posted by {{comment.author }}</a></strong></span> | on {{comment.created_date}} {{post.date_posted|date:"F d Y"}}</p></div>
+            <div class="card-body">
+            <div class='row'>
+                <div class='col-2'>
+                <p class="card-title"><img style="height:65px; width:65px; " class="rounded-circle " src="{{ comment.author.profile.profile_pic.url }}"></p>
+                </div>
+                <div class='col-10 pt-4'>
+                <p><b>{{comment.comment_text}}</b></p>
+                </div>
             </div>
-            <div class="card card-body">
-                {{comment.comment_text}}
+                
+            </div>
             </div>
             </div>
           {% endfor %}
@@ -139,16 +147,20 @@
       
 </div>
   
-
+{% comment %} .article-img {
+  height: 65px;
+  width: 65px;
+  margin-right: 16px;
+} {% endcomment %}
 
 <div class="mx-auto w-75">
-      <h2>{{ event.get_number_of_attendees }} Attending</h2>
-          <div class="card card-body">
-              {% for attendee in attending %}
-                  <p>{{ attendee.username|capfirst }}</p>
+    <h2>{{ event.get_number_of_attendees }} Attending</h2>
+    <div class="card card-body">
+        {% for attendee in attending %}
+            <p>{{ attendee.username|capfirst }}</p>
 
-              {% endfor %}
+        {% endfor %}
 
-          </div>
-      </div>
+    </div>
+</div>
 {% endblock content %}
